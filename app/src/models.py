@@ -6,8 +6,6 @@ from pydantic import BaseModel
 
 
 class Adresse(BaseModel):
-    latitude: float
-    longitude: float
     rue: str
     ville: str
     npa: str
