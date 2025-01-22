@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Annotated
+import random
 
 from asyncpg import PostgresError
 from fastapi import Form, Request
@@ -154,7 +155,11 @@ async def post_offres(request: Request, data: Annotated[OffreCreate, Form()]):
 
         await database.execute(
             query=insert_full_query,
-            values=data.dict(),
+            values=dict(
+                **data.dict(),
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
 
         return RedirectResponse("/offres", status_code=303)
@@ -215,7 +220,13 @@ async def put_offres(request: Request, id: int, data: Annotated[OffreCreate, For
 
         await database.execute(
             query=update_full_query,
-            values=dict(id=id, idadresse=idadresse, **data.dict()),
+            values=dict(
+                **data.dict(),
+                id=id,
+                idadresse=idadresse,
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
         return RedirectResponse("/offres", status_code=303)
 
