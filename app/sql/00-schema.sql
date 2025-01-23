@@ -399,12 +399,12 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Best candidates for an offer
-CREATE OR REPLACE VIEW Candidat_Score AS
+CREATE OR REPLACE VIEW View_Candidat_Score AS
 SELECT 
     c.idPersonne AS idCandidat,
     o.id AS idOffre,
     haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) AS distance,
-    (
+    greatest((
         CASE
             WHEN cd.diplomePossede = od.diplomeRecherche THEN 100
             WHEN cd.diplomePossede > od.diplomeRecherche THEN 80
@@ -415,8 +415,11 @@ SELECT
             WHEN cd.idDomaine = od.idDomaine THEN 50
             ELSE 20
         END::FLOAT -
-        (haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10)
-    ) AS score
+        (CASE 
+            WHEN haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10 > 100 THEN 100
+            ELSE haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10
+        END)
+    ), 0) AS score
 FROM 
     Candidat c
 JOIN 
@@ -443,7 +446,7 @@ BEGIN
         cs.idCandidat, 
         cs.score
     FROM 
-        Candidat_Score cs
+        View_Candidat_Score cs
     WHERE 
         cs.idOffre = get_candidats_pertinents.idoffre
     ORDER BY 
@@ -453,12 +456,12 @@ $$ LANGUAGE plpgsql;
 
 
 -- Best offers for a candidate
-CREATE OR REPLACE VIEW Offre_Score AS
+CREATE OR REPLACE VIEW View_Offre_Score AS
 SELECT 
     o.id AS idOffre,
     c.idPersonne AS idCandidat,
     haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) AS distance,
-    (
+    greatest((
         CASE
             WHEN od.diplomeRecherche = cd.diplomePossede THEN 100
             WHEN od.diplomeRecherche < cd.diplomePossede THEN 80
@@ -469,8 +472,11 @@ SELECT
             WHEN od.idDomaine = cd.idDomaine THEN 50
             ELSE 20
         END::FLOAT -
-        (haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10)
-    ) AS score
+        (CASE 
+            WHEN haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10 > 100 THEN 100
+            ELSE haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10
+        END)
+    ), 0) AS score
 FROM 
     Offre o
 JOIN 
@@ -495,7 +501,7 @@ BEGIN
         os.idOffre, 
         os.score
     FROM 
-        Offre_Score os
+        View_Offre_Score os
     WHERE 
         os.idCandidat = get_offres_pertinentes.idcandidat
     ORDER BY 

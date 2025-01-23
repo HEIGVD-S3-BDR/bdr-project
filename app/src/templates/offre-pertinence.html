@@ -17,7 +17,7 @@
       {% for candidat in candidats %}
       <tr>
         <td>{{ candidat.idcandidat }}</td>
-        <td>{{ candidat.score }}</td>
+        <td>{{ candidat.score|int }}</td>
       </tr>
       {% endfor %}
     </tbody>

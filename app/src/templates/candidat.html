@@ -56,6 +56,7 @@
         <th>Poste</th>
         <th>Date de publication</th>
         <th>Date de clôture</th>
+        <th>Score</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -68,6 +69,7 @@
         <td>{{ offre.nomposte }}</td>
         <td>{{ offre.datepublication }}</td>
         <td>{{ offre.datecloture|default('-', true) }}</td>
+        <td>{{ offre.score|int }}</td>
         <td>
           {% if offre.datecloture == None %}
             <form action="/offres/{{ offre.id }}/close" method="post">

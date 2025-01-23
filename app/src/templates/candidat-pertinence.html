@@ -17,7 +17,7 @@
       {% for offre in offres %}
       <tr>
         <td>{{ offre.idoffre }}</td>
-        <td>{{ offre.score }}</td>
+        <td>{{ offre.score|int }}</td>
       </tr>
       {% endfor %}
     </tbody>

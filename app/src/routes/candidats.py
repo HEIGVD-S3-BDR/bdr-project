@@ -41,6 +41,7 @@ async def get_candidats_detail(request: Request, id: int) -> HTMLResponse:
         query_candidat = "SELECT * FROM View_Candidat WHERE id = :id;"
         query_offres_candidat = """SELECT * FROM Candidat_Offre co
         INNER JOIN Offre ON co.idoffre = Offre.id
+        INNER JOIN View_Offre_Score vos on co.idoffre = vos.idOffre
         WHERE co.idcandidat = :id;
         """
         async with database.transaction():
