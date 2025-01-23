@@ -72,14 +72,18 @@ async def get_offres(
 
 
 @router.get("/offres/{id}", tags=["offres"])
-async def get_offres_detail(request: Request, id: int) -> HTMLResponse:
+async def get_offres_detail(request: Request, id: int,  sort_by_score: bool = False) -> HTMLResponse:
     try:
         query_offre = "SELECT * FROM View_Offre WHERE id = :id;"
         query_offre_candidats = """SELECT * FROM Candidat_Offre co
         INNER JOIN View_Candidat c ON co.idcandidat = c.id
         INNER JOIN View_Candidat_Score vcs on co.idcandidat = vcs.idcandidat
-        WHERE co.idoffre = :id;
+        WHERE co.idoffre = :id
         """
+
+        if sort_by_score:
+            query_offre_candidats += " ORDER BY vcs.score DESC"
+
         async with database.transaction():
             offre = await database.fetch_one(query=query_offre, values=dict(id=id))
             candidats = await database.fetch_all(
@@ -99,7 +103,7 @@ async def get_offres_detail(request: Request, id: int) -> HTMLResponse:
             candidats=[dict(record) for record in candidats],
         )
         return templates.TemplateResponse(
-            request=request, name="offre.html", context=dict(data=data)
+            request=request, name="offre.html", context=dict(data=data, sort_by_score=sort_by_score)
         )
 
     except PostgresError as e:
