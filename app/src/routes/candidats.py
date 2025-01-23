@@ -1,7 +1,8 @@
 from typing import Annotated
+import random
 
 from asyncpg import PostgresError
-from fastapi import Form, Request
+from fastapi import Form, Request, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 
 from config import templates
@@ -9,30 +10,110 @@ from db import database
 from models import CandidatCreate
 from routes import router
 
-
 @router.get("/")
 async def home(request: Request) -> HTMLResponse:
     return templates.TemplateResponse(request=request, name="base.html")
 
 
 @router.get("/candidats", tags=["candidats"])
-async def get_candidats(request: Request, idoffre: int | None = None) -> HTMLResponse:
+async def get_candidats(
+    request: Request, 
+    idoffre: int | None = None, 
+    gender: list[str] = Query([], alias="gender"),
+    minAge: int | None = None,
+    maxAge: int | None = None,
+    minExp: int | None = None,
+    maxExp: int | None = None,
+    ) -> HTMLResponse:
     try:
-        if idoffre is None:
-            query = "SELECT * FROM View_Candidat;"
-            data = await database.fetch_all(query=query)
-        else:
-            query = "SELECT * FROM View_Candidat INNER JOIN Candidat_Offre ON View_Candidat.id = Candidat_Offre.idcandidat WHERE Candidat_Offre.idoffre = :idoffre;"
-            data = await database.fetch_all(query=query, values=dict(idoffre=idoffre))
+        base_query = "SELECT * FROM View_Candidat"
+        filters = []
+
+        # If idoffre is provided, apply the filter for idoffre
+        if idoffre is not None:
+            filters.append("INNER JOIN Candidat_Offre ON View_Candidat.id = Candidat_Offre.idcandidat")
+            filters.append(f"WHERE Candidat_Offre.idoffre = :idoffre")
+        
+        # If gender is provided, apply the gender filter
+        if gender:
+            gender_condition = " OR ".join([f"View_Candidat.genre = '{g}'" for g in gender])
+            if filters:
+                filters.append(f"AND ({gender_condition})")
+            else:
+                filters.append(f"WHERE ({gender_condition})")
+
+        # If minAge or maxAge is provided, apply the age filter
+        if minAge is not None or maxAge is not None:
+            age_conditions = []
+            if minAge is not None:
+                age_conditions.append(f"View_Candidat.age >= :minAge")
+            if maxAge is not None:
+                age_conditions.append(f"View_Candidat.age <= :maxAge")
+            
+            age_condition = " AND ".join(age_conditions)
+            if filters:
+                filters.append(f"AND ({age_condition})")
+            else:
+                filters.append(f"WHERE ({age_condition})")
+
+         # If minExp or maxExp is provided, apply the experience filter
+        if minExp is not None or maxExp is not None:
+            exp_conditions = []
+            if minExp is not None:
+                exp_conditions.append(f"View_Candidat.anneesExp >= :minExp")
+            if maxExp is not None:
+                exp_conditions.append(f"View_Candidat.anneesExp <= :maxExp")
+            
+            exp_condition = " AND ".join(exp_conditions)
+            if filters:
+                filters.append(f"AND ({exp_condition})")
+            else:
+                filters.append(f"WHERE ({exp_condition})")
+
+        # Combine the base query with filters
+        query = f"{base_query} {' '.join(filters)}"
+
+        # Prepare the values for query substitution
+        values = {}
+        if idoffre is not None:
+            values["idoffre"] = idoffre
+        if minAge is not None:
+            values["minAge"] = minAge
+        if maxAge is not None:
+            values["maxAge"] = maxAge
+        if minExp is not None:
+            values["minExp"] = minExp
+        if maxExp is not None:
+            values["maxExp"] = maxExp
+
+        # Log the query and values for debugging
+        print("Generated SQL Query: %s", query)
+        print("Bound Values: %s", values)
+
+        # Fetch the data from the database
+        data = await database.fetch_all(query=query, values=values)
+
+        # Convert to dictionary format
         data = [dict(record) for record in data]
+
+        # Return the template with the filtered data and gender filter state
         return templates.TemplateResponse(
-            request=request, name="candidats.html", context=dict(candidats=data)
+            request=request, name="candidats.html",
+            context=dict(
+                candidats=data, 
+                gender=gender, 
+                minAge=minAge, 
+                maxAge=maxAge, 
+                minExp=minExp, 
+                maxExp=maxExp
+            )
         )
 
     except PostgresError as e:
         return templates.TemplateResponse(
             request=request, name="error.html", context=dict(error=str(e))
         )
+
 
 
 @router.get("/candidats/{id}", tags=["candidats"])
@@ -133,7 +214,11 @@ async def post_candidats(
 
         await database.execute(
             query=insert_full_query,
-            values=data.dict(),
+            values=dict(
+                **data.dict(),
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
 
         return RedirectResponse("/candidats", status_code=303)
@@ -201,7 +286,13 @@ async def put_candidats(
 
         await database.execute(
             query=update_full_query,
-            values=dict(id=id, idadresse=idadresse, **data.dict()),
+            values=dict(
+                **data.dict(),
+                id=id,
+                idadresse=idadresse,
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
         return RedirectResponse("/candidats", status_code=303)
 

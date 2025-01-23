@@ -2,6 +2,74 @@
 
 {% block content %}
 <h1>Offres</h1>
+
+<script>
+
+ function submitForm() {
+    const form = document.getElementById("filterForm");
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const statut = document.getElementById("statut").value;
+    const datePublication = document.getElementById("datePublication").value;
+    const name = document.getElementById("name").value;
+
+    urlParams.set("statut", statut);
+
+    if (datePublication != '')
+      urlParams.set("datePublication", datePublication);
+    else
+      urlParams.delete("datePublication");
+
+    if (name != '')
+      urlParams.set("name", name); 
+    else
+      urlParams.delete("name");
+
+    const newUrl = "/offres?" + urlParams.toString();  
+    window.location = newUrl; 
+  }
+</script>
+
+<div class="filter-box">
+  <label>Filtres</label>
+
+  <form method="get" action="/offres" id="filterForm">
+    <div class="filter-sub-box">
+      <label for="statut">Tri par statut</label>
+      <div class="filter-item">
+        <select name="statut" id="statut" onchange="submitForm()">
+          <option value="all" {% if statut == "all" %}selected{% endif %}>Toutes les offres</option>
+          <option value="open" {% if statut == "open" %}selected{% endif %}>Offres ouvertes uniquement</option>
+          <option value="closed" {% if statut == "closed" %}selected{% endif %}>Offres closes uniquement</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-sub-box">
+      <label for="datePublication">Tri par date de publication</label>
+      <div class="filter-item">
+        <select name="datePublication" id="datePublication" onchange="submitForm()">
+          <option value="" {% if datePublication == "" %}selected{% endif %} disabled>--</option>
+          <option value="recent" {% if datePublication == "recent" %}selected{% endif %}>Plus récentes d'abord</option>
+          <option value="oldest" {% if datePublication == "oldest" %}selected{% endif %}>Plus anciennes d'abord</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="filter-sub-box">
+      <label for="name">Recherche par nom d'offre</label>
+      <div class="filter-item">
+        <input type="text" name="name" id="name" value="{{ name }}" placeholder="Nom de l'offre" onsubmit="submitForm()">
+      </div>
+    </div>
+
+    <noscript><button type="submit">Appliquer</button></noscript>
+  </form>
+</div>
+
+
+</div>
+
 <figure>
   <table>
     <thead>

@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Annotated
+import random
 
 from asyncpg import PostgresError
 from fastapi import Form, Request
@@ -10,27 +11,64 @@ from db import database
 from models import OffreCreate
 from routes import router
 
-
 @router.get("/offres", tags=["offres"])
-async def get_offres(request: Request, idcandidat: int | None = None) -> HTMLResponse:
+async def get_offres(
+    request: Request, idCandidat: int | None = None,
+    statut: str = "all", datePublication: str = "", name: str = ""
+)-> HTMLResponse:
     try:
-        if idcandidat is None:
-            query = "SELECT * FROM View_Offre;"
-            data = await database.fetch_all(query=query)
+        # Base query to select from View_Offre
+        base_query = "SELECT * FROM View_Offre"
+        filters = []
+        values = {}
+
+        # If idCandidat is provided, add the join and filter for idCandidat
+        if idCandidat is not None:
+            filters.append(f"INNER JOIN Candidat_Offre ON View_Offre.id = Candidat_Offre.idoffre")
+            filters.append(f"WHERE Candidat_Offre.idCandidat = :idCandidat")
+            values['idCandidat'] = idCandidat
+
+        # If statut is provided (open or closed), apply the corresponding filter
+        if statut != "all":
+            status_condition = "datecloture IS NULL" if statut == "open" else "datecloture IS NOT NULL"
+            if filters:
+                filters.append(f"AND View_Offre.{status_condition}")
+            else:
+                filters.append(f"WHERE View_Offre.{status_condition}")
+
+        # If name is provided, add a LIKE condition to the query
+        if name:
+            if filters:
+                filters.append(f"AND View_Offre.nomposte ILIKE :name")
+            else:
+                filters.append(f"WHERE View_Offre.nomposte ILIKE :name")
+            values['name'] = f"%{name}%"  # Ensuring proper LIKE search for starting letters
+
+        # If datePublication filter is applied, modify the query to include ordering
+        if datePublication == "recent":
+            order_by = "ORDER BY datepublication DESC"  # Most recent first
+        elif datePublication == "oldest":
+            order_by = "ORDER BY datepublication ASC"  # Oldest first
         else:
-            query = "SELECT * FROM View_Offre INNER JOIN Candidat_Offre ON View_Offre.id = Candidat_Offre.idoffre WHERE Candidat_Offre.idcandidat = :idcandidat;"
-            data = await database.fetch_all(
-                query=query, values=dict(idcandidat=idcandidat)
-            )
+            order_by = ""  # Default, no ordering if no filter provided
+
+        # Combine the base query with filters and ordering
+        query = f"{base_query} {' '.join(filters)} {order_by}"
+
+        # Fetch the data from the database
+        data = await database.fetch_all(query=query, values=values)
 
         return templates.TemplateResponse(
-            request=request, name="offres.html", context=dict(offres=data)
+            request=request, 
+            name="offres.html", 
+            context=dict(offres=data, idCandidat=idCandidat, statut=statut, datePublication=datePublication, name=name)
         )
 
     except PostgresError as e:
         return templates.TemplateResponse(
             request=request, name="error.html", context=dict(error=str(e))
         )
+
 
 
 @router.get("/offres/{id}", tags=["offres"])
@@ -118,7 +156,11 @@ async def post_offres(request: Request, data: Annotated[OffreCreate, Form()]):
 
         await database.execute(
             query=insert_full_query,
-            values=data.dict(),
+            values=dict(
+                **data.dict(),
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
 
         return RedirectResponse("/offres", status_code=303)
@@ -179,7 +221,13 @@ async def put_offres(request: Request, id: int, data: Annotated[OffreCreate, For
 
         await database.execute(
             query=update_full_query,
-            values=dict(id=id, idadresse=idadresse, **data.dict()),
+            values=dict(
+                **data.dict(),
+                id=id,
+                idadresse=idadresse,
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
         return RedirectResponse("/offres", status_code=303)
 
