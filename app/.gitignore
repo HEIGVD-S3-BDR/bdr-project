@@ -1,7 +1,1 @@
-.venv/
-
-*.pyc
-__pycache__/
-.mypy*
-
 postgres/

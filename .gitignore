@@ -1,1 +1,7 @@
-data
+.venv/
+
+*.pyc
+__pycache__/
+.mypy*
+
+data/

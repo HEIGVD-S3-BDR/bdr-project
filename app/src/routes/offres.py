@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Annotated
+import random
 
 from asyncpg import PostgresError
 from fastapi import Form, Request
@@ -10,14 +11,57 @@ from db import database
 from models import OffreCreate
 from routes import router
 
-
 @router.get("/offres", tags=["offres"])
-async def get_offres(request: Request) -> HTMLResponse:
+async def get_offres(
+    request: Request, idCandidat: int | None = None,
+    statut: str = "all", datePublication: str = "", name: str = ""
+)-> HTMLResponse:
     try:
-        query = "SELECT * FROM View_Offre;"
-        data = await database.fetch_all(query=query)
+        # Base query to select from View_Offre
+        base_query = "SELECT * FROM View_Offre"
+        filters = []
+        values = {}
+
+        # If idCandidat is provided, add the join and filter for idCandidat
+        if idCandidat is not None:
+            filters.append(f"INNER JOIN Candidat_Offre ON View_Offre.id = Candidat_Offre.idoffre")
+            filters.append(f"WHERE Candidat_Offre.idCandidat = :idCandidat")
+            values['idCandidat'] = idCandidat
+
+        # If statut is provided (open or closed), apply the corresponding filter
+        if statut != "all":
+            status_condition = "datecloture IS NULL" if statut == "open" else "datecloture IS NOT NULL"
+            if filters:
+                filters.append(f"AND View_Offre.{status_condition}")
+            else:
+                filters.append(f"WHERE View_Offre.{status_condition}")
+
+        # If name is provided, add a LIKE condition to the query
+        if name:
+            if filters:
+                filters.append(f"AND View_Offre.nomposte ILIKE :name")
+            else:
+                filters.append(f"WHERE View_Offre.nomposte ILIKE :name")
+            values['name'] = f"%{name}%"  # Ensuring proper LIKE search for starting letters
+
+        # If datePublication filter is applied, modify the query to include ordering
+        if datePublication == "recent":
+            order_by = "ORDER BY datepublication DESC"  # Most recent first
+        elif datePublication == "oldest":
+            order_by = "ORDER BY datepublication ASC"  # Oldest first
+        else:
+            order_by = ""  # Default, no ordering if no filter provided
+
+        # Combine the base query with filters and ordering
+        query = f"{base_query} {' '.join(filters)} {order_by}"
+
+        # Fetch the data from the database
+        data = await database.fetch_all(query=query, values=values)
+
         return templates.TemplateResponse(
-            request=request, name="offres.html", context=dict(offres=data)
+            request=request, 
+            name="offres.html", 
+            context=dict(offres=data, idCandidat=idCandidat, statut=statut, datePublication=datePublication, name=name)
         )
 
     except PostgresError as e:
@@ -26,13 +70,36 @@ async def get_offres(request: Request) -> HTMLResponse:
         )
 
 
+
 @router.get("/offres/{id}", tags=["offres"])
 async def get_offres_detail(request: Request, id: int) -> HTMLResponse:
     try:
-        query = "SELECT * FROM View_Offre WHERE id = :id;"
-        data = await database.fetch_one(query=query, values=dict(id=id))
+        query_offre = "SELECT * FROM View_Offre WHERE id = :id;"
+        query_offre_candidats = """SELECT * FROM Candidat_Offre co
+        INNER JOIN View_Candidat c ON co.idcandidat = c.id
+        INNER JOIN View_Candidat_Score vcs on co.idcandidat = vcs.idcandidat
+        WHERE co.idoffre = :id;
+        """
+        async with database.transaction():
+            offre = await database.fetch_one(query=query_offre, values=dict(id=id))
+            candidats = await database.fetch_all(
+                query=query_offre_candidats, values=dict(id=id)
+            )
+
+        if offre is None:
+            # TODO: Return Not found
+            return templates.TemplateResponse(
+                request=request,
+                name="error.html",
+                context=dict(error="Offre not found"),
+            )
+
+        data = dict(
+            offre=dict(offre),
+            candidats=[dict(record) for record in candidats],
+        )
         return templates.TemplateResponse(
-            request=request, name="offre.html", context=dict(offre=dict(data))
+            request=request, name="offre.html", context=dict(data=data)
         )
 
     except PostgresError as e:
@@ -104,7 +171,11 @@ async def post_offres(request: Request, data: Annotated[OffreCreate, Form()]):
 
         await database.execute(
             query=insert_full_query,
-            values=data.dict(),
+            values=dict(
+                **data.dict(),
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
 
         return RedirectResponse("/offres", status_code=303)
@@ -165,7 +236,13 @@ async def put_offres(request: Request, id: int, data: Annotated[OffreCreate, For
 
         await database.execute(
             query=update_full_query,
-            values=dict(id=id, idadresse=idadresse, **data.dict()),
+            values=dict(
+                **data.dict(),
+                id=id,
+                idadresse=idadresse,
+                latitude=random.uniform(-90, 90),
+                longitude=random.uniform(-180, 180),
+            ),
         )
         return RedirectResponse("/offres", status_code=303)
 
@@ -190,6 +267,31 @@ async def close_offres(request: Request, id: int):
         )
         return RedirectResponse(url=f"/offres/{id}", status_code=303)
 
+    except PostgresError as e:
+        return templates.TemplateResponse(
+            request=request,
+            name="error.html",
+            context=dict(error=str(e)),
+        )
+
+@router.get("/offres/{idoffre}/pertinence", tags=["offres"])
+async def get_candidats_pertinence(request: Request, idoffre: int) -> HTMLResponse:
+    try:
+        query = """
+        SELECT cs.idCandidat, cs.score, c.nom, c.prenom, c.email, c.age, c.genre, c.numerotel, c.anneesExp
+        FROM get_candidats_pertinents(:idoffre) cs
+        JOIN View_Candidat c ON cs.idCandidat = c.id
+        ORDER BY cs.score DESC;
+        """
+        candidats = await database.fetch_all(query, values={"idoffre": idoffre})
+        
+        query_offre = "SELECT * FROM View_Offre WHERE id = :idoffre;"
+        offre = await database.fetch_one(query_offre, values={"idoffre": idoffre})
+        
+        return templates.TemplateResponse(
+            "offre-pertinence.html",
+            {"request": request, "offre": dict(offre), "candidats": [dict(c) for c in candidats]},
+        )
     except PostgresError as e:
         return templates.TemplateResponse(
             request=request,
