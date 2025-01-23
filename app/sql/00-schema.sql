@@ -382,3 +382,129 @@ CREATE TABLE Candidat_Domaine (
     CONSTRAINT FK_Domaine FOREIGN KEY (idDomaine) REFERENCES Domaine(id) ON DELETE RESTRICT ON UPDATE NO ACTION
 );
 
+-- Calculate distance based on latitude and longitude
+CREATE OR REPLACE FUNCTION haversine(lat1 FLOAT, lon1 FLOAT, lat2 FLOAT, lon2 FLOAT)
+RETURNS FLOAT AS $$
+DECLARE
+    r FLOAT := 6371; -- Earth radius
+    dlat FLOAT := radians(lat2 - lat1);
+    dlon FLOAT := radians(lon2 - lon1);
+    a FLOAT;
+    c FLOAT;
+BEGIN
+    a := sin(dlat / 2)^2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2)^2;
+    c := 2 * atan2(sqrt(a), sqrt(1 - a));
+    RETURN r * c; -- Distance in km
+END;
+$$ LANGUAGE plpgsql;
+
+-- Best candidates for an offer
+CREATE OR REPLACE VIEW View_Candidat_Score AS
+SELECT 
+    c.idPersonne AS idCandidat,
+    o.id AS idOffre,
+    haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) AS distance,
+    greatest((
+        CASE
+            WHEN cd.diplomePossede = od.diplomeRecherche THEN 100
+            WHEN cd.diplomePossede > od.diplomeRecherche THEN 80
+            WHEN cd.diplomePossede < od.diplomeRecherche THEN 50
+            ELSE 0
+        END::FLOAT +
+        CASE
+            WHEN cd.idDomaine = od.idDomaine THEN 50
+            ELSE 20
+        END::FLOAT -
+        (CASE 
+            WHEN haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10 > 100 THEN 100
+            ELSE haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10
+        END)
+    ), 0) AS score
+FROM 
+    Candidat c
+JOIN 
+    Adresse a1 ON c.idAdresse = a1.id
+JOIN 
+    Candidat_Domaine cd ON c.idPersonne = cd.idCandidat
+JOIN 
+    Offre o ON o.id = cd.idDomaine
+JOIN 
+    Adresse a2 ON o.idAdresse = a2.id
+JOIN 
+    Offre_Domaine od ON o.id = od.idOffre;
+
+
+
+CREATE OR REPLACE FUNCTION get_candidats_pertinents(idoffre INT)
+RETURNS TABLE (
+    idCandidat INT,
+    score FLOAT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        cs.idCandidat, 
+        cs.score
+    FROM 
+        View_Candidat_Score cs
+    WHERE 
+        cs.idOffre = get_candidats_pertinents.idoffre
+    ORDER BY 
+        cs.score DESC;
+END;
+$$ LANGUAGE plpgsql;
+
+
+-- Best offers for a candidate
+CREATE OR REPLACE VIEW View_Offre_Score AS
+SELECT 
+    o.id AS idOffre,
+    c.idPersonne AS idCandidat,
+    haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) AS distance,
+    greatest((
+        CASE
+            WHEN od.diplomeRecherche = cd.diplomePossede THEN 100
+            WHEN od.diplomeRecherche < cd.diplomePossede THEN 80
+            WHEN od.diplomeRecherche > cd.diplomePossede THEN 50
+            ELSE 0
+        END::FLOAT +
+        CASE
+            WHEN od.idDomaine = cd.idDomaine THEN 50
+            ELSE 20
+        END::FLOAT -
+        (CASE 
+            WHEN haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10 > 100 THEN 100
+            ELSE haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10
+        END)
+    ), 0) AS score
+FROM 
+    Offre o
+JOIN 
+    Adresse a1 ON o.idAdresse = a1.id
+JOIN 
+    Offre_Domaine od ON o.id = od.idOffre
+JOIN 
+    Candidat_Domaine cd ON cd.idDomaine = od.idDomaine
+JOIN 
+    Candidat c ON c.idPersonne = cd.idCandidat
+JOIN 
+    Adresse a2 ON c.idAdresse = a2.id;
+
+CREATE OR REPLACE FUNCTION get_offres_pertinentes(idcandidat INT)
+RETURNS TABLE (
+    idOffre INT,
+    score FLOAT
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT 
+        os.idOffre, 
+        os.score
+    FROM 
+        View_Offre_Score os
+    WHERE 
+        os.idCandidat = get_offres_pertinentes.idcandidat
+    ORDER BY 
+        os.score DESC;
+END;
+$$ LANGUAGE plpgsql;

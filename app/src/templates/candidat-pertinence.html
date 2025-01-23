@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Pertinence des offres pour le candidat {{ candidat.id }}</h1>
+<p>Nom : {{ candidat.nom }}</p>
+<p>Prénom : {{ candidat.prenom }}</p>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>ID Offre</th>
+        <th>Score de pertinence</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for offre in offres %}
+      <tr>
+        <td>{{ offre.idoffre }}</td>
+        <td>{{ offre.score|int }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</figure>
+
+<a href="/candidats/{{ candidat.id }}">Retour au candidat</a>
+{% endblock %}
