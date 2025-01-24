@@ -10,9 +10,10 @@ from db import database
 from models import CandidatCreate
 from routes import router
 
+
 @router.get("/")
 async def home(request: Request) -> HTMLResponse:
-    return templates.TemplateResponse(request=request, name="base.html")
+    return RedirectResponse("/candidats", status_code=301)
 
 
 @router.get("/candidats", tags=["candidats"])
