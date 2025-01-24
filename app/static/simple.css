@@ -81,7 +81,7 @@ a:hover {
 form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  width: fit-content;
+  width: 100%;
   gap: 1.5rem;
   align-items: end;
 }
@@ -105,6 +105,7 @@ textarea,
 select,
 input,
 progress {
+  width: 100%;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -912,13 +913,13 @@ sub {
 
 .filter-box label {
   position: absolute;
-  top: -1rem; 
-  left: 1.2rem; 
+  top: -1rem;
+  left: 1.2rem;
   background-color: var(--accent-bg);
-  font-size: 1.1rem; 
+  font-size: 1.1rem;
   color: var(--text);
   font-weight: bold;
-  padding: 0 0.7rem; 
+  padding: 0 0.7rem;
   z-index: 1;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -960,13 +961,13 @@ sub {
 
 .filter-sub-box label {
   position: absolute;
-  top: -0.7rem; 
-  left: 1.2rem; 
+  top: -0.7rem;
+  left: 1.2rem;
   background-color: var(--accent-bg);
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   color: var(--text);
   font-weight: bold;
-  padding: 0 0.7rem; 
+  padding: 0 0.7rem;
   z-index: 1;
   border: 1px solid var(--border);
   border-radius: 4px;
@@ -1009,7 +1010,9 @@ sub {
 .filter-item select {
   padding: 1rem;
   font-size: 1rem;
-  background-color: var(--accent-bg); /* Match background color with filter-box */
+  background-color: var(
+    --accent-bg
+  ); /* Match background color with filter-box */
   border: 1px solid var(--border);
   border-radius: var(--standard-border-radius);
   width: 100%; /* Ensure select takes up the full width of the container */
@@ -1025,7 +1028,6 @@ sub {
 .filter-item select:focus {
   border-color: var(--accent-color); /* Change the border color on focus */
 }
-
 
 input[type="checkbox"] + label,
 input[type="radio"] + label {
