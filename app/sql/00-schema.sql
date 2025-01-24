@@ -410,11 +410,11 @@ SELECT
             WHEN cd.diplomePossede > od.diplomeRecherche THEN 80
             WHEN cd.diplomePossede < od.diplomeRecherche THEN 50
             ELSE 0
-        END::FLOAT +
+        END +
         CASE
             WHEN cd.idDomaine = od.idDomaine THEN 50
             ELSE 20
-        END::FLOAT -
+        END -
         (CASE 
             WHEN haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10 > 100 THEN 100
             ELSE haversine(a1.latitude, a1.longitude, a2.latitude, a2.longitude) / 10
@@ -422,17 +422,11 @@ SELECT
     ), 0) AS score
 FROM 
     Candidat c
-JOIN 
-    Adresse a1 ON c.idAdresse = a1.id
-JOIN 
-    Candidat_Domaine cd ON c.idPersonne = cd.idCandidat
-JOIN 
-    Offre o ON o.id = cd.idDomaine
-JOIN 
-    Adresse a2 ON o.idAdresse = a2.id
-JOIN 
-    Offre_Domaine od ON o.id = od.idOffre;
-
+INNER JOIN Adresse a1 ON c.idAdresse = a1.id
+INNER JOIN Candidat_Domaine cd ON c.idPersonne = cd.idCandidat
+INNER JOIN Offre_Domaine od ON cd.idDomaine = od.idDomaine
+INNER JOIN Offre o ON o.id = od.idOffre
+INNER JOIN Adresse a2 ON o.idAdresse = a2.id;
 
 
 CREATE OR REPLACE FUNCTION get_candidats_pertinents(idoffre INT)
@@ -479,16 +473,11 @@ SELECT
     ), 0) AS score
 FROM 
     Offre o
-JOIN 
-    Adresse a1 ON o.idAdresse = a1.id
-JOIN 
-    Offre_Domaine od ON o.id = od.idOffre
-JOIN 
-    Candidat_Domaine cd ON cd.idDomaine = od.idDomaine
-JOIN 
-    Candidat c ON c.idPersonne = cd.idCandidat
-JOIN 
-    Adresse a2 ON c.idAdresse = a2.id;
+INNER JOIN Adresse a1 ON o.idAdresse = a1.id
+INNER JOIN Offre_Domaine od ON o.id = od.idOffre
+INNER JOIN Candidat_Domaine cd ON cd.idDomaine = od.idDomaine
+INNER JOIN Candidat c ON c.idPersonne = cd.idCandidat
+INNER JOIN Adresse a2 ON c.idAdresse = a2.id;
 
 CREATE OR REPLACE FUNCTION get_offres_pertinentes(idcandidat INT)
 RETURNS TABLE (

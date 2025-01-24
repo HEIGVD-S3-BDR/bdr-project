@@ -121,10 +121,12 @@ async def get_candidats(
 async def get_candidats_detail(request: Request, id: int) -> HTMLResponse:
     try:
         query_candidat = "SELECT * FROM View_Candidat WHERE id = :id;"
-        query_offres_candidat = """SELECT * FROM Candidat_Offre co
-        INNER JOIN Offre ON co.idoffre = Offre.id
-        INNER JOIN View_Offre_Score vos on co.idoffre = vos.idOffre
-        WHERE co.idcandidat = :id;
+        query_offres_candidat = """SELECT co.*, o.*, vos.*
+        FROM Candidat_Offre co
+        INNER JOIN View_Offre o ON co.idoffre = o.id
+        INNER JOIN View_Offre_Score vos ON co.idoffre = vos.idoffre
+            AND vos.idCandidat = co.idcandidat
+        WHERE co.idcandidat = :id
         """
         async with database.transaction():
             candidat = await database.fetch_one(
