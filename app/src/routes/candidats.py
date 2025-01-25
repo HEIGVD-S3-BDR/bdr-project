@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 
 from config import templates
 from db import database
-from models import CandidatCreate
+from models import CandidatCreate, CandidatUpdate
 from routes import router
 
 
@@ -170,10 +170,16 @@ async def get_candidats_detail(request: Request, id: int) -> HTMLResponse:
 
 @router.get("/candidat-new", tags=["candidats"])
 async def get_candidats_new(request: Request) -> HTMLResponse:
+    offres = await database.fetch_all(query="SELECT * FROM Offre;")
     return templates.TemplateResponse(
         request=request,
         name="candidat-update.html",
-        context=dict(method="post", candidat=None),
+        context=dict(
+            method="post",
+            candidat=None,
+            offres=[dict(record) for record in offres],
+            linked_offres=[],
+        ),
     )
 
 
@@ -182,10 +188,26 @@ async def get_candidats_update(request: Request, id: int) -> HTMLResponse:
     try:
         query = "SELECT * FROM View_Candidat WHERE id = :id;"
         data = await database.fetch_one(query=query, values=dict(id=id))
+
+        offres = await database.fetch_all(query="SELECT * FROM Offre;")
+
+        query = """
+        SELECT co.idoffre
+        FROM Candidat_Offre AS co
+        WHERE co.idcandidat = :id;
+        """
+        linked_offres = await database.fetch_all(query=query, values=dict(id=id))
+        linked_offres = [item["idoffre"] for item in linked_offres]
+
         return templates.TemplateResponse(
             request=request,
             name="candidat-update.html",
-            context=dict(method="put", candidat=dict(data)),
+            context=dict(
+                method="put",
+                candidat=dict(data),
+                offres=[dict(record) for record in offres],
+                linked_offres=linked_offres,
+            ),
         )
 
     except PostgresError as e:
@@ -222,24 +244,45 @@ async def post_candidats(
             :numerotel,
             :anneesexp,
             inserted_adresse.idadresse
-        FROM inserted_adresse, inserted_personne;
+        FROM inserted_adresse, inserted_personne
+        RETURNING idpersonne;
         """
 
-        await database.execute(
-            query=insert_full_query,
-            values=dict(
-                **data.dict(),
-                latitude=random.uniform(-90, 90),
-                longitude=random.uniform(-180, 180),
-            ),
-        )
+        offre_candidat_insert = """
+        INSERT INTO Candidat_Offre (idcandidat, idoffre, datepostulation, statut)
+        VALUES (:idcandidat, :idoffre, CURRENT_DATE, 'En attente');
+        """
+        candidat_create_data = data.dict()
+        candidat_create_data.pop("offres")
+        async with database.transaction():
+            idpersonne = await database.execute(
+                query=insert_full_query,
+                values=dict(
+                    **candidat_create_data,
+                    latitude=random.uniform(-90, 90),
+                    longitude=random.uniform(-180, 180),
+                ),
+            )
+
+            for idoffre in data.offres:
+                await database.execute(
+                    query=offre_candidat_insert,
+                    values=dict(idcandidat=idpersonne, idoffre=idoffre),
+                )
 
         return RedirectResponse("/candidats", status_code=303)
     except PostgresError as e:
+        offres = await database.fetch_all(query="SELECT * FROM Offre;")
         return templates.TemplateResponse(
             request=request,
             name="candidat-update.html",
-            context=dict(method="post", candidat=data, error=str(e)),
+            context=dict(
+                method="post",
+                candidat=data,
+                offres=[dict(record) for record in offres],
+                linked_offres=[],
+                error=str(e),
+            ),
         )
 
 
@@ -247,7 +290,7 @@ async def post_candidats(
 async def put_candidats(
     request: Request,
     id: int,
-    data: Annotated[CandidatCreate, Form()],
+    data: Annotated[CandidatUpdate, Form()],
 ):
     try:
         get_idadresse_query = """

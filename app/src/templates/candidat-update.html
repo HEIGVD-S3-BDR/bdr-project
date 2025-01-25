@@ -57,9 +57,18 @@
     <label for="npa">NPA*</label>
     <input type="text" id="npa" name="npa" value="{{ candidat.npa|default('') }}" required>
   </div>
-  <div>
+  <div style="grid-column: span 2 / span 2">
     <label for="pays">Pays*</label>
     <input type="text" id="pays" name="pays" value="{{ candidat.pays|default('') }}" required>
+  </div>
+    <!-- Offers -->
+  <div style="grid-column: span 2 / span 2">
+    <label for="offers">Offres* (<kbd>CTRL</kbd> pour en selectionner plusieures)</label>
+      <select id="offres" name="offres" multiple required {% if linked_offres %}disabled{% endif %}>
+        {% for offre in offres %}
+        <option value="{{ offre.id }}" {% if offre.id in linked_offres %}selected{% endif %}>{{ offre.nomposte }} - {{ offre.descriptionoffre }}</option>
+        {% endfor %}
+      </select>
   </div>
   <div>
     <button type="submit">Soumettre</button>

@@ -18,11 +18,15 @@ class Personne(BaseModel, ABC):
     email: str
 
 
-class CandidatCreate(Personne, Adresse):
+class CandidatUpdate(Personne, Adresse):
     age: int
     genre: Literal["Homme", "Femme", "Autre"]
     numerotel: str
     anneesexp: int
+
+
+class CandidatCreate(CandidatUpdate):
+    offres: list[int]
 
 
 class Candidat(CandidatCreate):
