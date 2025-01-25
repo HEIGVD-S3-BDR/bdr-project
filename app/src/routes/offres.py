@@ -75,6 +75,12 @@ async def get_offres(
 async def get_offres_detail(request: Request, id: int,  sort_by_score: bool = False) -> HTMLResponse:
     try:
         query_offre = "SELECT * FROM View_Offre WHERE id = :id;"
+        query_domaines = """
+        SELECT * FROM Offre_Domaine as cd
+        INNER JOIN Domaine as d
+        on cd.iddomaine = d.id
+        WHERE idoffre = :id;
+        """
         query_offre_candidats = """SELECT co.*, c.*, vcs.*
         FROM Candidat_Offre co
         INNER JOIN View_Candidat c ON co.idcandidat = c.id
@@ -88,6 +94,9 @@ async def get_offres_detail(request: Request, id: int,  sort_by_score: bool = Fa
 
         async with database.transaction():
             offre = await database.fetch_one(query=query_offre, values=dict(id=id))
+            domaines = await database.fetch_all(
+                query=query_domaines, values=dict(id=id)
+            )
             candidats = await database.fetch_all(
                 query=query_offre_candidats, values=dict(id=id)
             )
@@ -102,6 +111,7 @@ async def get_offres_detail(request: Request, id: int,  sort_by_score: bool = Fa
 
         data = dict(
             offre=dict(offre),
+            domaines=[dict(record) for record in domaines],
             candidats=[dict(record) for record in candidats],
         )
         return templates.TemplateResponse(
