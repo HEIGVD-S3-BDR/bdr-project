@@ -63,7 +63,7 @@
   </div>
     <!-- Offers -->
   <div style="grid-column: span 2 / span 2">
-    <label for="offers">Offres*</label>
+    <label for="offers">Offres* (<kbd>CTRL</kbd> pour en selectionner plusieures)</label>
       <select id="offres" name="offres" multiple required {% if linked_offres %}disabled{% endif %}>
         {% for offre in offres %}
         <option value="{{ offre.id }}" {% if offre.id in linked_offres %}selected{% endif %}>{{ offre.nomposte }} - {{ offre.descriptionoffre }}</option>
