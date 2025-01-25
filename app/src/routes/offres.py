@@ -75,9 +75,11 @@ async def get_offres(
 async def get_offres_detail(request: Request, id: int,  sort_by_score: bool = False) -> HTMLResponse:
     try:
         query_offre = "SELECT * FROM View_Offre WHERE id = :id;"
-        query_offre_candidats = """SELECT * FROM Candidat_Offre co
+        query_offre_candidats = """SELECT co.*, c.*, vcs.*
+        FROM Candidat_Offre co
         INNER JOIN View_Candidat c ON co.idcandidat = c.id
-        INNER JOIN View_Candidat_Score vcs on co.idcandidat = vcs.idcandidat
+        INNER JOIN View_Candidat_Score vcs ON co.idcandidat = vcs.idCandidat
+            AND vcs.idOffre = co.idoffre
         WHERE co.idoffre = :id
         """
 
