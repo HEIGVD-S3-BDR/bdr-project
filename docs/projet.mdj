@@ -1019,7 +1019,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 784,
+											"left": 832,
 											"top": 338,
 											"height": 13
 										},
@@ -1030,11 +1030,11 @@
 												"$ref": "AAAAAAGSn2/CfL8Bv/Y="
 											},
 											"font": "Arial;13;1",
-											"left": 581,
+											"left": 605,
 											"top": 335,
 											"width": 34.68359375,
 											"height": 13,
-											"text": "Interaction_Email"
+											"text": "Email"
 										},
 										{
 											"_type": "LabelView",
@@ -1044,7 +1044,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 784,
+											"left": 832,
 											"top": 338,
 											"width": 73.67724609375,
 											"height": 13,
@@ -1058,14 +1058,14 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 784,
+											"left": 832,
 											"top": 338,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 576,
+									"left": 600,
 									"top": 328,
 									"width": 44.68359375,
 									"height": 25,
@@ -1102,7 +1102,7 @@
 												"$ref": "AAAAAAGTAbfSRhD97P0="
 											},
 											"font": "Arial;13;0",
-											"left": 581,
+											"left": 605,
 											"top": 358,
 											"width": 34.68359375,
 											"height": 13,
@@ -1111,7 +1111,7 @@
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 576,
+									"left": 600,
 									"top": 353,
 									"width": 44.68359375,
 									"height": 23
@@ -1127,7 +1127,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 576,
+									"left": 600,
 									"top": 363,
 									"width": 52.919921875,
 									"height": 10
@@ -1143,7 +1143,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 392,
+									"left": 416,
 									"top": 169,
 									"width": 10,
 									"height": 10
@@ -1159,7 +1159,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 392,
+									"left": 416,
 									"top": 169,
 									"width": 10,
 									"height": 10
@@ -1167,7 +1167,7 @@
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 576,
+							"left": 600,
 							"top": 328,
 							"width": 44.68359375,
 							"height": 48,
@@ -1212,8 +1212,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 622,
-									"top": 275,
+									"left": 635,
+									"top": 277,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -1233,8 +1233,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 610,
-									"top": 267,
+									"left": 621,
+									"top": 271,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -1254,8 +1254,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 647,
-									"top": 292,
+									"left": 662,
+									"top": 290,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -1273,7 +1273,7 @@
 								"$ref": "AAAAAAGSn2/CfL8A3gg="
 							},
 							"lineStyle": 1,
-							"points": "612:327;659:254",
+							"points": "632:327;666:254",
 							"nameLabel": {
 								"$ref": "AAAAAAGSn2/Clb8z//4="
 							},
@@ -1312,7 +1312,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 822.16015625,
+											"left": 854.16015625,
 											"top": 338,
 											"height": 13
 										},
@@ -1323,11 +1323,11 @@
 												"$ref": "AAAAAAGSn2/FFb9NJDg="
 											},
 											"font": "Arial;13;1",
-											"left": 661,
+											"left": 677,
 											"top": 335,
 											"width": 36.11181640625,
 											"height": 13,
-											"text": "Interaction_Appel"
+											"text": "Appel"
 										},
 										{
 											"_type": "LabelView",
@@ -1337,7 +1337,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 822.16015625,
+											"left": 854.16015625,
 											"top": 338,
 											"width": 73.67724609375,
 											"height": 13,
@@ -1351,14 +1351,14 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 822.16015625,
+											"left": 854.16015625,
 											"top": 338,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 656,
+									"left": 672,
 									"top": 328,
 									"width": 46.11181640625,
 									"height": 25,
@@ -1395,7 +1395,7 @@
 												"$ref": "AAAAAAGTAbglrRplH/s="
 											},
 											"font": "Arial;13;0",
-											"left": 661,
+											"left": 677,
 											"top": 358,
 											"width": 36.11181640625,
 											"height": 13,
@@ -1413,7 +1413,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 661,
+											"left": 693,
 											"top": 373,
 											"width": 55.6435546875,
 											"height": 13,
@@ -1422,7 +1422,7 @@
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 656,
+									"left": 672,
 									"top": 353,
 									"width": 46.11181640625,
 									"height": 23
@@ -1438,7 +1438,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 656,
+									"left": 672,
 									"top": 363,
 									"width": 52.919921875,
 									"height": 10
@@ -1454,7 +1454,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 411.080078125,
+									"left": 427.080078125,
 									"top": 169,
 									"width": 10,
 									"height": 10
@@ -1470,7 +1470,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 411.080078125,
+									"left": 427.080078125,
 									"top": 169,
 									"width": 10,
 									"height": 10
@@ -1478,7 +1478,7 @@
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 656,
+							"left": 672,
 							"top": 328,
 							"width": 46.11181640625,
 							"height": 48,
@@ -1523,8 +1523,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 666,
-									"top": 283,
+									"left": 675,
+									"top": 284,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -1544,8 +1544,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 651,
-									"top": 282,
+									"left": 660,
+									"top": 285,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -1565,8 +1565,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 695,
-									"top": 284,
+									"left": 704,
+									"top": 283,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -1584,7 +1584,7 @@
 								"$ref": "AAAAAAGSn2/FFb9MNcY="
 							},
 							"lineStyle": 1,
-							"points": "679:327;683:254",
+							"points": "692:327;688:254",
 							"nameLabel": {
 								"$ref": "AAAAAAGSn2/FL79/W/Q="
 							},
@@ -1623,8 +1623,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 857,
-											"top": 104,
+											"left": 873,
+											"top": 72,
 											"height": 13
 										},
 										{
@@ -1634,11 +1634,11 @@
 												"$ref": "AAAAAAGSn3CH9sR+KnE="
 											},
 											"font": "Arial;13;1",
-											"left": 741,
-											"top": 335,
+											"left": 749,
+											"top": 319,
 											"width": 56.341796875,
 											"height": 13,
-											"text": "Interaction_Entretien"
+											"text": "Entretien"
 										},
 										{
 											"_type": "LabelView",
@@ -1648,8 +1648,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 857,
-											"top": 104,
+											"left": 873,
+											"top": 72,
 											"width": 73.67724609375,
 											"height": 13,
 											"text": "(from Model)"
@@ -1662,15 +1662,15 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 857,
-											"top": 104,
+											"left": 873,
+											"top": 72,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 736,
-									"top": 328,
+									"left": 744,
+									"top": 312,
 									"width": 66.341796875,
 									"height": 25,
 									"stereotypeLabel": {
@@ -1707,8 +1707,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 1197,
-											"top": 526,
+											"left": 1213,
+											"top": 494,
 											"width": 63.2353515625,
 											"height": 13,
 											"text": "date",
@@ -1725,8 +1725,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 1197,
-											"top": 528,
+											"left": 1213,
+											"top": 496,
 											"width": 63.2353515625,
 											"height": 13,
 											"text": "heure",
@@ -1743,8 +1743,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 1197,
-											"top": 528,
+											"left": 1213,
+											"top": 496,
 											"width": 63.2353515625,
 											"height": 13,
 											"text": "type",
@@ -1760,8 +1760,8 @@
 												"$ref": "AAAAAAGTAbhffR0kRe0="
 											},
 											"font": "Arial;13;0",
-											"left": 741,
-											"top": 360,
+											"left": 749,
+											"top": 344,
 											"width": 56.341796875,
 											"height": 13,
 											"text": "type",
@@ -1777,8 +1777,8 @@
 												"$ref": "AAAAAAGTAuyUHLXQzvE="
 											},
 											"font": "Arial;13;0",
-											"left": 741,
-											"top": 375,
+											"left": 749,
+											"top": 359,
 											"width": 56.341796875,
 											"height": 13,
 											"text": "durée",
@@ -1795,8 +1795,8 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 741,
-											"top": 390,
+											"left": 757,
+											"top": 358,
 											"width": 63.2353515625,
 											"height": 13,
 											"text": "sujet",
@@ -1804,8 +1804,8 @@
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 736,
-									"top": 353,
+									"left": 744,
+									"top": 337,
 									"width": 66.341796875,
 									"height": 40
 								},
@@ -1820,8 +1820,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 736,
-									"top": 363,
+									"left": 744,
+									"top": 347,
 									"width": 74.2353515625,
 									"height": 10
 								},
@@ -1836,8 +1836,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 456,
-									"top": 88,
+									"left": 464,
+									"top": 72,
 									"width": 10,
 									"height": 10
 								},
@@ -1852,16 +1852,16 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 456,
-									"top": 88,
+									"left": 464,
+									"top": 72,
 									"width": 10,
 									"height": 10
 								}
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 736,
-							"top": 328,
+							"left": 744,
+							"top": 312,
 							"width": 66.341796875,
 							"height": 65,
 							"autoResize": true,
@@ -1905,8 +1905,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 714,
-									"top": 291,
+									"left": 720,
+									"top": 284,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -1926,8 +1926,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 701,
-									"top": 298,
+									"left": 708,
+									"top": 293,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -1947,8 +1947,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 741,
-									"top": 276,
+									"left": 745,
+									"top": 267,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -1966,7 +1966,7 @@
 								"$ref": "AAAAAAGSn3CH9sR9uME="
 							},
 							"lineStyle": 1,
-							"points": "749:327;708:254",
+							"points": "753:311;713:254",
 							"nameLabel": {
 								"$ref": "AAAAAAGSn3CsZMSprck="
 							},
@@ -6389,8 +6389,8 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 120,
-							"top": 712,
+							"left": 8,
+							"top": 784,
 							"width": 209,
 							"height": 41,
 							"text": "CI: Une adresse est liée à au moins un candidat ou une offre."
@@ -6421,7 +6421,7 @@
 							"left": 744,
 							"top": 240,
 							"width": 129,
-							"height": 38,
+							"height": 51,
 							"text": "{complete, disjoint}"
 						},
 						{
@@ -6438,7 +6438,7 @@
 								"$ref": "AAAAAAGTAxjCMOL84gI="
 							},
 							"lineStyle": 1,
-							"points": "758:278;728:290"
+							"points": "743:280;733:282"
 						},
 						{
 							"_type": "UMLConstraintLinkView",
@@ -6454,7 +6454,7 @@
 								"$ref": "AAAAAAGTAxjCMOL84gI="
 							},
 							"lineStyle": 1,
-							"points": "743:274;681:290"
+							"points": "743:279;690:290"
 						},
 						{
 							"_type": "UMLConstraintLinkView",
@@ -6470,7 +6470,7 @@
 								"$ref": "AAAAAAGTAxjCMOL84gI="
 							},
 							"lineStyle": 1,
-							"points": "743:270;635:290"
+							"points": "743:275;649:290"
 						},
 						{
 							"_type": "UMLConstraintLinkView",
@@ -6486,7 +6486,7 @@
 								"$ref": "AAAAAAGTAx2RNV77hek="
 							},
 							"lineStyle": 1,
-							"points": "345:178;425:178"
+							"points": "345:188;425:178"
 						},
 						{
 							"_type": "UMLConstraintLinkView",
@@ -6502,7 +6502,7 @@
 								"$ref": "AAAAAAGTAx2RNV77hek="
 							},
 							"lineStyle": 1,
-							"points": "300:198;356:254"
+							"points": "326:219;356:254"
 						},
 						{
 							"_type": "UMLConstraintView",
@@ -6514,10 +6514,10 @@
 								"$ref": "AAAAAAGTAxjCMOL7AQk="
 							},
 							"font": "Arial;13;0",
-							"left": 216,
-							"top": 160,
-							"width": 129,
-							"height": 38,
+							"left": 264,
+							"top": 168,
+							"width": 81,
+							"height": 51,
 							"text": "{complete, disjoint}"
 						},
 						{
@@ -7030,11 +7030,11 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 584,
-							"top": 512,
+							"left": 536,
+							"top": 528,
 							"width": 225,
 							"height": 38,
-							"text": "Diplomes de type enum (CFC, Bachelor, Master, etc)"
+							"text": "Les diplômes sont de type enum (CFC, Bachelor, Master, etc)"
 						},
 						{
 							"_type": "UMLNoteView",
@@ -7043,11 +7043,11 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 584,
-							"top": 416,
+							"left": 576,
+							"top": 440,
 							"width": 225,
 							"height": 79,
-							"text": "CI: la date de postulation est dans l'intervalle [date_publication, date_cloture]\nCI: statut != 'embauché' si offre.date_cloture est nulle"
+							"text": "CI: la date de postulation est dans l'intervalle [datePublication, dateCloture]\nCI: statut != 'embauché' si la date de clôture de l'offre est nulle"
 						},
 						{
 							"_type": "UMLNoteView",
@@ -7056,11 +7056,76 @@
 								"$ref": "AAAAAAFF+qBtyKM79qY="
 							},
 							"font": "Arial;13;0",
-							"left": 24,
+							"left": 16,
 							"top": 184,
 							"width": 225,
-							"height": 187,
-							"text": "CI: La date de fin dans ContratTravail est soit nulle, soit est postérieure à la date de début.\nCI: La date de début de contrat de travail est postérieure à offre.date_cloture\nCI: Une offre qui n'a pas de date de clôture n'est pas liée à un contrat de travail.\nCI: Pour être liée à un contrat de travail, une offre doit avoir une date de clôture et être liée avec un candidat embauché"
+							"height": 174,
+							"text": "CI: La date de début de contrat de travail est postérieure à la date de clôture de l'offre.\nCI: La date de fin dans ContratTravail est soit nulle, soit est postérieure à la date de début.\nCI: Pour être liée à un contrat de travail, une offre doit avoir une date de clôture et être liée avec un candidat embauché\nCI: Le salaire horaire est supérieur à 0"
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGUo3ncLHmeLE0=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 8,
+							"top": 728,
+							"width": 209,
+							"height": 51,
+							"text": "CI: La latitude est entre -90 et 90, et la longitude est entre -180 et 180"
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGUo5xKwBEi6J4=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 160,
+							"top": 384,
+							"width": 145,
+							"height": 51,
+							"text": "CI: L'âge d'un candidat est entre 16 et 100"
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGUo53OpT7ikvs=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 816,
+							"top": 312,
+							"width": 169,
+							"height": 38,
+							"text": "Type d'entretien : Enum (Technique, RH, Autre)"
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGUo62CxxuSIAc=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 216,
+							"top": 720,
+							"width": 185,
+							"height": 105,
+							"text": "CI: Une offre qui n'a pas de date de clôture n'est pas liée à un contrat de travail.\nCI: La date de clôture de l'offre est soit nulle, soit postérieure à la date de publication de l'offre"
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAGUo7PvMhEH+fU=",
+							"_parent": {
+								"$ref": "AAAAAAFF+qBtyKM79qY="
+							},
+							"font": "Arial;13;0",
+							"left": 576,
+							"top": 384,
+							"width": 225,
+							"height": 51,
+							"text": "Statut est de type Enum (En Attente, En cours, Embauché, Refusé)"
 						}
 					]
 				},
@@ -7445,7 +7510,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Interaction_Entretien",
+					"name": "Entretien",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -7956,7 +8021,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Interaction_Email",
+					"name": "Email",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
@@ -7990,7 +8055,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Interaction_Appel",
+					"name": "Appel",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
