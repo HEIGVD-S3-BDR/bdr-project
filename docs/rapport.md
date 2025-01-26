@@ -443,15 +443,94 @@ CHECK (dateCloture IS NULL OR dateCloture > datePublication)
 
 ### Création d'une Offre
 
+Pour ajouter une offre dans la base de données, il faut se rendre sur http://localhost:8000/offre-new ou cliquer sur `+ Offre`. Afin d'être redirigé sur la page suivante.
+
+![Nouvelle offre](../img/offre-new.png)
+
+On peut renseigner les différents champs nécessaires à la création de l'offre puis cliquer sur soumettre.
+
 ### Liste des Offres
 
-### Detail d'une Offres
+La liste de toutes les offres se trouve à l'url http://localhost:8000/offres que l'on peut accéder en cliquant sur `Offres`. 
+
+![Offres](../img/offres.png)
+
+On peut observer certaines informations sur les offres. Il est également possible de clôturer une offre si elle est encore ouverte, en cliquant sur `Clôturer`, ce qui lui assignera la date d'aujourd'hui comme date de clôture.
+
+### Detail d'une Offre
+
+Depuis la page précédente en cliquant sur `Détails` on accède à http://localhost:8000/offres/id avec id le numéro correspondant à l'id de l'offre. 
+
+![Detail offre](../img/offre-detail.png)
+
+On obtient ainsi des informations supplémentaires sur l'offre ainsi que la liste des candidats qui y ont postulé. On a accès au statut des candidats et à leur score de compatibilité avec l'offre. Le bouton `Tri par score` permet de trier les candidats ayant postulé à cette offre du meilleur au moins bon score de compatibilité. 
+
+
+### Modification d'une Offre
+
+Pour modifier les informations d'une offre il faut se rendre sur http://localhost:8000/offre/id/edit avec id le numéro correspondant à l'id de l'offre que l'on souhaite modifier. Cette page est accessible depuis les différents boutons `Modifier` que l'on voit dès qu'une offre est affichée à différents endroits de l'application. 
+
+![Modifier Offre](../img/offre-edit.png)
+
+Cela nous redirige sur une page similaire à celle de création d'offre mais avec les champs préremplis contenant les informations actuelles de l'offre à modifier. Une fois les champs modifier, il suffit de cliquer sur `Soumettre`.
+
+### Filtre des Offres
+
+La page http://localhost:8000/offres permet de filtrer les offres en y ajoutant différent query parameters. Soit directement dans l'URL, soit à l'aide des différents selecteurs fournis. 
+
+|Interface|Query parameters|
+|:---------:|:-----------------:|
+|![Tri par statut](../img/tri-statut.png)| `?statut=all`,  `?statut=open`, `?statut=closed` |
+|![Tri date](../img/tri-date.png)| `?datePublication=recent` `?datePublication=oldest`|
+|![Searchbar](../img/searchbar.png)|`?name={name}`|
+|Depuis la page http://localhost:8000/candidats/id, cliquer sur `Voir les postulations` permet de ne voir que les offres auxquelles un certain candidat a postulé. | `?idCandidat={id}`
+
+Il est possible de combiner les filtres en utilisant les différents outils de l'interface ou en séparant les query parameters par des `&`. Notons cependant qu'il ne faut pas avoir plusieurs fois le même query parameter avec des valeurs différentes. La barre de recherche permet de chercher une offre par nom, pour les offres dont le nom est composé de plusieurs mots, cela permet de les retrouver avec n'importe lequel des mots qui la compose. Par exemple l'offre Technicien-dentiste pourra être retrouvée en recherchant Technicien, dentiste, ou encore Technicien-dentiste. 
 
 ### Création d'un Candidat
 
+Pour ajouter un candidat dans la base de données, il faut se rendre sur http://localhost/candidat-new que l'on peut atteindre en cliquant sur `+ Candidat`
+
+![Nouveau candidat](../img/candidat-new.png)
+
+On rempli les champs requis, et l'on clique sur `Soumettre`. Notons que pour assigner ce candidat à une offre il faut que l'offre ait été crée précédemment afin qu'elle figure dans la liste des offres proposées. Il est possible de l'assigner à plusieurs offres en maintenant la touche `CTRL` en cliquant sur les différentes offres souhaitées.
+
 ### Liste des Candidats
 
-### Detail d'une Candidat
+La liste de tout les candidats se trouve sur http://localhost:8000/candidats que l'on peut accéder en cliquant sur `Candidats`.
+
+![Candidats](../img/candidats.png)
+
+On peut observer différentes informations sur tout les candidats de la base de données.
+
+### Detail d'un Candidat
+
+Depuis la page précédente en cliquant sur `Détails` on accède à http://localhost:8000/candidats/id avec id le numéro correspondant à l'id du candidat. 
+
+![Detail candidat](../img/candidat-detail.png)
+
+Cette page nous donne des informations supplémentaires sur le candidat ainsi que la liste des offres auquel il a postulé et son statut les concernant. 
+
+### Modification d'un Candidat 
+
+Pour modifier un candidat il faut se rendre sur http://localhost:8000/candidat/id/edit avec id le numéro correspondant à l'id du candidat que l'on souhaite modifier. On peut facilement atteindre cette page depuis les divers boutons `Modifier` présents à chaque fois que l'on afficher des informations pour un candidat.
+
+![Modifier candidat](../img/candidat-edit.png)
+
+Cela nous amène sur un formulaire similaire à celui de la création d'un nouveau candidat mais pourlequel les champs sont préremplis avec les informations actuelles du candidat. Une fois les changement souhaités effectués, on clique sur `Soumettre` pour les rendre effectifs.
+
+### Filtre des Candidats
+
+La page http://localhost:8000/candidats permet de filtrer les candidats en y ajoutant différent query parameters. Soit directement dans l'URL, soit à l'aide des différents selecteurs fournis. 
+
+|Interface|Query parameters|
+|:---------:|:-----------------:|
+|![Tri genre](../img/tri-genre.png)| `?gender=Homme`,  `?gender=Femme`, `?gender=Autre` pouvant être combinés pour avoir plusieurs genres. |
+|![Tri age](../img/tri-age.png)| `?minAge={minAge}&maxAge={maxAge}` Si une valeur n'est pas fournie, elle est remplacée par une valeur par défaut : minAge=16 et maxAge=100|
+|![Tri Exp](../img/tri-exp.png)|`?minExp={minExp}`, `?maxExp={maxExp}` |
+|Depuis la page http://localhost:8000/offres/id, cliquer sur `Voir les candidats` permet de ne voir que les candidats ayant postulé à une certaine offre. | `?idoffre={id}`
+
+Il est possible de combiner les filtres en utilisant les différents outils de l'interface ou en séparant les query parameters par des `&`. Notons cependant qu'il ne faut pas avoir plusieurs fois le même query parameter avec des valeurs différentes, à l'exception de `?gender`
 
 # Conclusion
 
