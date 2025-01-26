@@ -1,5 +1,6 @@
 ---
-title: "Rapport de Projet BDR"
+title: "Recruta"
+subtitle: "Rapport de Projet BDR"
 author: "Cseres Leonard, Laydu Aude, Gerber Tristan"
 date: \today
 geometry: margin=1.5in
@@ -19,15 +20,20 @@ numbersections: true
 
 # Introduction
 
-Il est parfois compliqué pour les ressources humaines de suivre tous les candidats et offres d'emploi. C'est la problématique que nous avons choisi pour le projet de BDR.
+Il est parfois compliqué pour les ressources humaines de suivre tous les
+candidats et offres d'emploi. C'est la problématique que nous avons choisi pour
+le projet de BDR.
 
-Dans le cadre de ce projet, nous devons :  
-1. Écrire le cahier des charges  
-2. Modéliser un schéma EA conceptuel de la base de données  
-3. Transformer le schéma EA en schéma relationnel et l'implémenter avec Postgresql  
-4. Réaliser des requêtes, vues et triggers / procédures stockées  
-5. Coder une application et la lier à la base de données via une API  
+Dans le cadre de ce projet, nous devons:
 
+1. Écrire le cahier des charges
+2. Modéliser un schéma EA conceptuel de la base de données
+3. Transformer le schéma EA en schéma relationnel et l'implémenter avec
+   PostgreSQL
+4. Réaliser des requêtes, vues et triggers / procédures stockées
+5. Coder une application et la lier à la base de données via une API
+
+---
 
 # Cahier des charges
 
@@ -77,8 +83,10 @@ des entretiens.
 
 ## Modélisation Relationnelle
 
-Le modèle relationnel permet de transformer les informations du schéma EA réalisé précédemment en un langage plus proche du code, sans pour autant en perdre la simplicité.  
-Voici la modélisation que nous avons mise en place :  
+Le modèle relationnel permet de transformer les informations du schéma EA
+réalisé précédemment en un langage plus proche du code, sans pour autant en
+perdre la simplicité.  
+Voici la modélisation que nous avons mise en place :
 
 Personne(\underline{id}, nom, prenom, email)
 
@@ -626,7 +634,7 @@ nombreuses fonctionnalités en mettant l'accent sur la simplicité et
 l'efficacité.
 
 Cependant, certaines fonctionnalités prévues n’ont pas pu être développées. Pour
-aller plus loin, nous pourrions ajouter des interactions directes entre
+aller plus loin, nous pourrions développer les interactions directes entre
 candidats et recruteurs, ainsi qu'approfondir les mécanismes de matching entre
 candidats et offres.
 
@@ -640,27 +648,30 @@ candidats et offres.
 
 Ci-dessous sont les étapes à suivre afin de démarrer et utiliser l'application.
 
-### Avec Docker
+### Utilisation
 
-Afin de démarrer l'application, naviguez jusqu'au sous-dossier `app` et lancez les conteneurs :  
+Afin de démarrer l'application, naviguez jusqu'au sous-dossier `app` et lancez
+les conteneurs:
 
 ```bash
 docker-compose up --build
 ```
 
-Ceci va lancer la base de données, la populer et démarrer le serveur web sur le port :  
+Ceci va lancer la base de données, la peupler et démarrer le serveur web sur le
+port:  
 `http://localhost:8000`.
 
-### Sans Docker
+### Développement
 
-Afin d'installer les dépendances en local, commencez par créer un environnement virutel :
+Afin d'installer les dépendances en local, commencez par créer un environnement
+virtuel:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Puis installez les dépendances :
+Puis installez les dépendances:
 
 ```bash
 pip install -r requirements.txt
