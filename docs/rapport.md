@@ -441,6 +441,10 @@ CHECK (dateCloture IS NULL OR dateCloture > datePublication)
 
 ## Manuel Utilisateur
 
+### Introduction
+
+Les section suivantse visent à expliquer comment créer, modifier, consulter et filtrer les données que notre application permet de visualiser. Au premier démarrage de l'application une quantité suffisante de données sera générée et automatiquement ajoutée à la base de données. Ceci permettant de tester les différentes fonctionnalités sans avoir à créer chaque offre ou candidat à la main.
+
 ### Création d'une Offre
 
 Pour ajouter une offre dans la base de données, il faut se rendre sur http://localhost:8000/offre-new ou cliquer sur `+ Offre`. Afin d'être redirigé sur la page suivante.
