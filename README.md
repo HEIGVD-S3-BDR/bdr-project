@@ -2,7 +2,7 @@
 
 ## Usage
 
-To run the application, cd into `app` and run docker compose:
+To run the application, change directory into `app` and run docker compose:
 
 ```bash
 docker-compose up --build

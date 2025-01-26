@@ -13,5 +13,5 @@ python3 main.py > data.sql
 
 ## Limitations
 
-- We do not generate yet candidats that are "Embaûchés"
+- We do not generate yet candidats that are "Embauchés"
 - We do not generate interactions yet

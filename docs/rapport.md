@@ -19,12 +19,15 @@ numbersections: true
 
 # Introduction
 
-Dans le cadre du projet de BDR, nous avons:
+Il est parfois compliqué pour les ressources humaines de suivre tous les candidats et offres d'emploi. C'est la problématique que nous avons choisi pour le projet de BDR.
 
-1. Créé le cahier des charges
-2. Éffectué la modélisation
-3. Implémenté physiquement la bdd
-4. Codé une application
+Dans le cadre de ce projet, nous devons :  
+1. Écrire le cahier des charges  
+2. Modéliser un schéma EA conceptuel de la base de données  
+3. Transformer le schéma EA en schéma relationnel et l'implémenter avec Postgresql  
+4. Réaliser des requêtes, vues et triggers / procédures stockées  
+5. Coder une application et la lier à la base de données via une API  
+
 
 # Cahier des charges
 
@@ -73,6 +76,9 @@ des entretiens.
 ![Schema EA](ea.png)
 
 ## Modélisation Relationnelle
+
+Le modèle relationnel permet de transformer les informations du schéma EA réalisé précédemment en un langage plus proche du code, sans pour autant en perdre la simplicité.  
+Voici la modélisation que nous avons mise en place :  
 
 Personne(\underline{id}, nom, prenom, email)
 
@@ -632,30 +638,29 @@ candidats et offres.
 
 ## Guide d'Installation et d'Utilisation
 
-<!-- TODO: rewrite into french and into more comprehensive guide -->
+Ci-dessous sont les étapes à suivre afin de démarrer et utiliser l'application.
 
 ### Avec Docker
 
-To run the application, cd into `app` and run docker compose:
+Afin de démarrer l'application, naviguez jusqu'au sous-dossier `app` et lancez les conteneurs :  
 
 ```bash
 docker-compose up --build
 ```
 
-This will start up the database, seed it, and run the webserver on
+Ceci va lancer la base de données, la populer et démarrer le serveur web sur le port :  
 `http://localhost:8000`.
 
 ### Sans Docker
 
-In order to install the dependencies locally, first create a virtual
-environment:
+Afin d'installer les dépendances en local, commencez par créer un environnement virutel :
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Then, install the dependencies:
+Puis installez les dépendances :
 
 ```bash
 pip install -r requirements.txt
