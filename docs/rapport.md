@@ -32,12 +32,16 @@ Dans le cadre du projet de BDR, nous avons:
 
 ## Objectif de l'application
 
-Développer une application pour permettre aux recruteurs de gérer efficacement les processus de recrutement, incluant la gestion des candidats, des postes et des entretiens.
+Développer une application pour permettre aux recruteurs de gérer efficacement
+les processus de recrutement, incluant la gestion des candidats, des postes et
+des entretiens.
 
 ## Fonctionnalités principales
 
-- Gestion des candidats: ajout, modification, suppression, suivi des interactions, statut.
-- Gestion des offres d'emploi: création, gestion des offres, suivi des candidatures.
+- Gestion des candidats: ajout, modification, suppression, suivi des
+  interactions, statut.
+- Gestion des offres d'emploi: création, gestion des offres, suivi des
+  candidatures.
 - Gestion des entretiens: planification et suivi des retours.
 - Suivi du processus de recrutement: vue d'ensemble des candidats par poste.
 - Authentification de base pour les recruteurs.
@@ -79,8 +83,7 @@ Adresse(\underline{id}, latitude, longitude, rue, ville, npa, pays)
 
 Candidat(\underline{idPersonne}, age, genre, numeroTel, anneesExp, idAdresse)  
 Candidat.idPersonne reference Personne.id  
-Candidat.idAdresse reference Adresse.id
-Candidat.idAdresse NOT NULL UNIQUE
+Candidat.idAdresse reference Adresse.id Candidat.idAdresse NOT NULL UNIQUE
 
 Recruteur_Candidat(\underline{idRecruteur, idCandidat})  
 Recruteur_Candidat.idRecruteur reference Recruteur.idPersonne  
@@ -105,7 +108,8 @@ Appel.idInteraction reference Interaction.id
 Entretien(\underline{idInteraction}, typeEntretien, duree)  
 Entretien.idInteraction reference Interaction.id
 
-Offre(\underline{id}, descriptionOffre, nomPoste, annneesExpRequises, datePublication, dateCloture, idAdresse)  
+Offre(\underline{id}, descriptionOffre, nomPoste, annneesExpRequises,
+datePublication, dateCloture, idAdresse)  
 Offre.idAdresse reference Adresse.id  
 Offre.idAdresse NOT NULL UNIQUE
 
@@ -120,8 +124,8 @@ Candidat_Offre.idOffre reference Offre.id
 Domaine(\underline{id}, nom)
 
 Offre_Domaine(\underline{idOffre, idDomaine}, diplomeRecherche)
-Offre_Domaine.idOffre reference Offre.id
-Offre_Domaine.idDomaine reference Domaine.id
+Offre_Domaine.idOffre reference Offre.id Offre_Domaine.idDomaine reference
+Domaine.id
 
 Candidat_Domaine(\underline{idCandidat, idDomaine}, diplomePossede)
 Candidat_Domaine.idCandidat reference Candidat.idPersonne
@@ -147,8 +151,11 @@ ON DELETE RESTRICT
 ON UPDATE NO ACTION
 ```
 
-- **Personne:** Si une personne est supprimée, le profil de candidat est également supprimé. Cela garantit qu'un candidat ne peut pas exister sans une identité personnelle de base.
-- **Adresse:** L'adresse ne peut pas être supprimée si un candidat y est associé, afin de préserver l'intégrité des données historiques.
+- **Personne:** Si une personne est supprimée, le profil de candidat est
+  également supprimé. Cela garantit qu'un candidat ne peut pas exister sans une
+  identité personnelle de base.
+- **Adresse:** L'adresse ne peut pas être supprimée si un candidat y est
+  associé, afin de préserver l'intégrité des données historiques.
 
 #### Recruteur
 
@@ -159,7 +166,8 @@ ON DELETE CASCADE
 ON UPDATE CASCADE
 ```
 
-- Similaire au Candidat: si la personne est supprimée, son profil de recruteur est également supprimé.
+- Similaire au Candidat: si la personne est supprimée, son profil de recruteur
+  est également supprimé.
 
 #### Recruteur_Candidat
 
@@ -177,7 +185,8 @@ ON DELETE RESTRICT
 ON UPDATE CASCADE
 ```
 
-- Empêche la suppression d'un recruteur ou d'un candidat s'il existe des relations professionnelles entre eux.
+- Empêche la suppression d'un recruteur ou d'un candidat s'il existe des
+  relations professionnelles entre eux.
 - Autorise la mise à jour des identifiants si nécessaire.
 
 #### Interactions (Emails, Appels, Entretiens)
@@ -189,7 +198,8 @@ ON DELETE CASCADE
 ON UPDATE CASCADE
 ```
 
-- Les interactions spécialisées (email, appel, entretien) sont supprimées si l'interaction parent est supprimée.
+- Les interactions spécialisées (email, appel, entretien) sont supprimées si
+  l'interaction parent est supprimée.
 - Permet de maintenir la cohérence des types d'interactions.
 
 #### Recruteur_Interaction et Candidat_Interaction
@@ -208,7 +218,8 @@ ON DELETE RESTRICT
 ON UPDATE CASCADE
 ```
 
-- Empêche la suppression d'un recruteur ou candidat s'il a des interactions historiques.
+- Empêche la suppression d'un recruteur ou candidat s'il a des interactions
+  historiques.
 - Interdit la suppression d'interactions liées à des personnes.
 
 #### Offre
@@ -221,7 +232,8 @@ ON DELETE RESTRICT
 ON UPDATE NO ACTION
 ```
 
-- L'adresse associée à une offre ne peut pas être supprimée, préservant la localisation historique de l'offre.
+- L'adresse associée à une offre ne peut pas être supprimée, préservant la
+  localisation historique de l'offre.
 
 #### Contrat_Travail
 
@@ -233,7 +245,8 @@ ON DELETE RESTRICT
 ON UPDATE NO ACTION
 ```
 
-- Un contrat ne peut pas être lié à une offre supprimée, garantissant l'intégrité des références.
+- Un contrat ne peut pas être lié à une offre supprimée, garantissant
+  l'intégrité des références.
 
 #### Candidat_Offre
 
@@ -252,7 +265,8 @@ ON UPDATE NO ACTION
 ```
 
 - Empêche la suppression d'un candidat ayant postulé à des offres.
-- Interdit la modification de la clé de l'offre une fois les candidatures enregistrées.
+- Interdit la modification de la clé de l'offre une fois les candidatures
+  enregistrées.
 
 #### Offre_Domaine et Candidat_Domaine
 
@@ -284,50 +298,66 @@ Ces choix de contraintes visent à:
 
 #### `check_personne()`
 
-- **Objectif:** Garantir qu'une personne ne peut être créé que si un Candidat ou un Recruteur est aussi crée dans la transaction
+- **Objectif:** Garantir qu'une personne ne peut être créé que si un Candidat ou
+  un Recruteur est aussi crée dans la transaction
 - **Déclenchement:** Après l'insertion dans la table Personne
 - **Action:** Lève une exception si la condition n'est pas respectée
 
 #### `check_personne_exists()`
 
-- **Objectif:** Garantir qu'un Candidat ou un Recruteur ne peut être créé que si l'identifiant de personne existe déjà
+- **Objectif:** Garantir qu'un Candidat ou un Recruteur ne peut être créé que si
+  l'identifiant de personne existe déjà
 - **Déclenchement:** Après l'insertion dans les tables Candidat et Recruteur
-- **Vérification:** Vérifie que l'`idPersonne` n'est pas null et existe dans la table Personne
+- **Vérification:** Vérifie que l'`idPersonne` n'est pas null et existe dans la
+  table Personne
 - **Action:** Lève une exception si la condition n'est pas respectée
 
 #### `check_interaction()`
 
-- **Objectif:** Garantir qu'une interaction ne peut être créé que si une interactions spécialisées (Email, Appel, Entretien) est aussi crée dans la transaction
+- **Objectif:** Garantir qu'une interaction ne peut être créé que si une
+  interactions spécialisées (Email, Appel, Entretien) est aussi crée dans la
+  transaction
 - **Déclenchement:** Après l'insertion dans la table Interaction
 - **Action:** Lève une exception si la condition n'est pas respectée
 
 #### `check_interaction_exists()`
 
-- **Objectif:** Assurer que les interactions spécialisées (Email, Appel, Entretien) sont liées à une interaction principale existante
-- **Déclenchement:** Après l'insertion dans les tables Interaction_Email, Interaction_Appel, Interaction_Entretien
-- **Vérification:** Confirme que l'`idInteraction` n'est pas null et existe dans la table Interaction
+- **Objectif:** Assurer que les interactions spécialisées (Email, Appel,
+  Entretien) sont liées à une interaction principale existante
+- **Déclenchement:** Après l'insertion dans les tables Interaction_Email,
+  Interaction_Appel, Interaction_Entretien
+- **Vérification:** Confirme que l'`idInteraction` n'est pas null et existe dans
+  la table Interaction
 - **Action:** Lève une exception si la condition n'est pas respectée
 
 #### `check_contrat_embauche()`
 
-- **Objectif:** Empêcher la création d'un contrat de travail sans candidat embauché
+- **Objectif:** Empêcher la création d'un contrat de travail sans candidat
+  embauché
 - **Déclenchement:** Avant l'insertion dans la table Contrat_Travail
-- **Vérification:** Vérifie qu'il existe au moins un candidat avec le statut 'Embauché' pour l'offre
+- **Vérification:** Vérifie qu'il existe au moins un candidat avec le statut
+  'Embauché' pour l'offre
 - **Action:** Lève une exception si aucun candidat n'a été embauché
 
 #### `check_fin_after_cloture()`
 
-- **Objectif:** Garantir que la date de fin du contrat est postérieure à la date de clôture de l'offre
-- **Déclenchement:** Avant l'insertion ou la mise à jour dans la table Contrat_Travail
-- **Vérification:** Compare la date de fin du contrat avec la date de clôture de l'offre
-- **Action:** Lève une exception si la date de fin est antérieure ou égale à la date de clôture
+- **Objectif:** Garantir que la date de fin du contrat est postérieure à la date
+  de clôture de l'offre
+- **Déclenchement:** Avant l'insertion ou la mise à jour dans la table
+  Contrat_Travail
+- **Vérification:** Compare la date de fin du contrat avec la date de clôture de
+  l'offre
+- **Action:** Lève une exception si la date de fin est antérieure ou égale à la
+  date de clôture
 
 #### `check_candidat_offre_constraints()`
 
 - **Objectif:** Valider les candidatures selon plusieurs contraintes
   1. Un statut 'Embauché' nécessite une date de clôture d'offre
-  2. La date de postulation doit être entre la date de publication et la date de clôture de l'offre
-- **Déclenchement:** Avant l'insertion ou la mise à jour dans la table Candidat_Offre
+  2. La date de postulation doit être entre la date de publication et la date de
+     clôture de l'offre
+- **Déclenchement:** Avant l'insertion ou la mise à jour dans la table
+  Candidat_Offre
 - **Vérification:**
   - Vérifie la cohérence du statut 'Embauché' avec la date de clôture
   - Contrôle que la date de postulation est dans la période valide de l'offre
@@ -335,12 +365,14 @@ Ces choix de contraintes visent à:
 
 #### `check_domaine_link()`
 
-- **Objectif:** S'assurer qu'un domaine est lié soit à un candidat, soit à une offre
+- **Objectif:** S'assurer qu'un domaine est lié soit à un candidat, soit à une
+  offre
 - **Déclenchement:** Après l'insertion ou la mise à jour dans la table Domaine
 - **Vérification:** Compte les liens avec des candidats et des offres
 - **Action:** Lève une exception si aucun lien n'est trouvé
 
-Tous ces triggers visent à maintenir la cohérence et l'intégrité des données du système de gestion de candidatures.
+Tous ces triggers visent à maintenir la cohérence et l'intégrité des données du
+système de gestion de candidatures.
 
 ### Contraintes Métier
 
@@ -352,7 +384,8 @@ CHECK (age >= 16 AND age < 100)
 
 - **Objectif:** Garantir un intervalle d'âge réaliste pour les candidats
 - **Plage:** Entre 16 et 99 ans
-- **Logique:** Exclut les candidats potentiellement trop jeunes ou irréalistement âgés
+- **Logique:** Exclut les candidats potentiellement trop jeunes ou
+  irréalistement âgés
 
 #### Validation des Coordonnées Géographiques (Adresse)
 
@@ -373,7 +406,8 @@ CHECK (fin IS NULL OR fin > debut)
 ```
 
 - **Objectif:** Garantir la cohérence des dates de contrat
-- **Condition:** Si une date de fin est spécifiée, elle doit être postérieure à la date de début
+- **Condition:** Si une date de fin est spécifiée, elle doit être postérieure à
+  la date de début
 - **Flexibilité:** Permet des contrats sans date de fin (contrats indéterminés)
 
 #### Validation du Salaire Horaire
@@ -393,33 +427,67 @@ CHECK (dateCloture IS NULL OR dateCloture > datePublication)
 ```
 
 - **Objectif:** Garantir la logique temporelle des offres
-- **Condition:** Si une date de clôture existe, elle doit être postérieure à la date de publication
+- **Condition:** Si une date de clôture existe, elle doit être postérieure à la
+  date de publication
 - **Flexibilité:** Autorise des offres sans date de clôture
 
-# Implémentation
+# Application
+
+<!--TODO: Introduction -->
 
 ## Technologies Utilisées
 
 ## Structure de l'Application
 
-## Requêtes SQL
+## Manuel Utilisateur
 
-# Tests
+### Création d'une Offre
 
-## Stratégie de Test
+### Liste des Offres
 
-## Résultats des Tests
+### Detail d'une Offres
+
+### Création d'un Candidat
+
+### Liste des Candidats
+
+### Detail d'une Candidat
 
 # Conclusion
 
-## Bilan
+\newpage
 
-## Perspectives
+\appendix
 
 # Annexes
 
-## A. Guide d'Installation et de Déploiement
+## Guide d'Installation et d'Utilisation
 
-## B. Manuel Utilisateur
+<!-- TODO: rewrite into french and into more comprehensive guide -->
 
-## C. Schémas Complémentaires
+### Avec Docker
+
+To run the application, cd into `app` and run docker compose:
+
+```bash
+docker-compose up --build
+```
+
+This will start up the database, seed it, and run the webserver on
+`http://localhost:8000`.
+
+### Sans Docker
+
+In order to install the dependencies locally, first create a virtual
+environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Then, install the dependencies:
+
+```bash
+pip install -r requirements.txt
+```
