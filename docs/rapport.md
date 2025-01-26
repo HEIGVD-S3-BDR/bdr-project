@@ -461,7 +461,7 @@ La liste de toutes les offres se trouve à l'url http://localhost:8000/offres qu
 
 On peut observer certaines informations sur les offres. Il est également possible de clôturer une offre si elle est encore ouverte, en cliquant sur `Clôturer`, ce qui lui assignera la date d'aujourd'hui comme date de clôture.
 
-### Detail d'une Offre
+### Détail d'une Offre
 
 Depuis la page précédente en cliquant sur `Détails` on accède à http://localhost:8000/offres/id avec id le numéro correspondant à l'id de l'offre. 
 
@@ -507,7 +507,7 @@ La liste de tout les candidats se trouve sur http://localhost:8000/candidats que
 
 On peut observer différentes informations sur tout les candidats de la base de données.
 
-### Detail d'un Candidat
+### Détail d'un Candidat
 
 Depuis la page précédente en cliquant sur `Détails` on accède à http://localhost:8000/candidats/id avec id le numéro correspondant à l'id du candidat. 
 
