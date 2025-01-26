@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+
+<small>Candidat</small>
+
+{% if method == 'post' %}
+<h1>Nouveau</h1>
+{% else %}
+<h1>Modifer</h1>
+{% endif %}
+
+<form action="{{ '/candidats' if method == 'post' else '/candidats/' ~ candidat.id ~ '/edit' }}" method="post">
+  <!-- Personal Information -->
+  <div>
+    <label for="nom">Nom*</label>
+    <input type="text" id="nom" name="nom" value="{{ candidat.nom|default('') }}" required>
+  </div>
+  <div>
+    <label for="prenom">Prénom*</label>
+    <input type="text" id="prenom" name="prenom" value="{{ candidat.prenom|default('') }}" required>
+  </div>
+  <div>
+    <label for="email">Email*</label>
+    <input type="email" id="email" name="email" value="{{ candidat.email|default('') }}" required>
+  </div>
+  <!-- Additional Information -->
+  <div>
+    <label for="age">Âge*</label>
+    <input type="number" id="age" name="age" value="{{ candidat.age|default('') }}" min="16" required>
+  </div>
+  <div>
+    <label for="genre">Genre*</label>
+    <select id="genre" name="genre" required>
+      <option value="Homme" {% if candidat.genre|default('')=="Homme" %}selected{% endif %}>Homme</option>
+      <option value="Femme" {% if candidat.genre|default('')=="Femme" %}selected{% endif %}>Femme</option>
+      <option value="Autre" {% if candidat.genre|default('')=="Autre" %}selected{% endif %}>Autre</option>
+    </select>
+  </div>
+  <div>
+    <label for="numerotel">Numéro de téléphone*</label>
+    <input type="text" id="numerotel" name="numerotel" value="{{ candidat.numerotel|default('') }}" required>
+  </div>
+  <div>
+    <label for="anneesexp">Années d'expérience*</label>
+    <input type="number" id="anneesexp" name="anneesexp" value="{{ candidat.anneesexp|default('') }}" required>
+  </div>
+  <!-- Address -->
+  <div>
+    <label for="rue">Rue*</label>
+    <input type="text" id="rue" name="rue" value="{{ candidat.rue|default('') }}" required>
+  </div>
+  <div>
+    <label for="ville">Ville*</label>
+    <input type="text" id="ville" name="ville" value="{{ candidat.ville|default('') }}" required>
+  </div>
+  <div>
+    <label for="npa">NPA*</label>
+    <input type="text" id="npa" name="npa" value="{{ candidat.npa|default('') }}" required>
+  </div>
+  <div style="grid-column: span 2 / span 2">
+    <label for="pays">Pays*</label>
+    <input type="text" id="pays" name="pays" value="{{ candidat.pays|default('') }}" required>
+  </div>
+    <!-- Offers -->
+  <div style="grid-column: span 2 / span 2">
+    <label for="offers">Offres* (<kbd>CTRL</kbd> pour en selectionner plusieures)</label>
+      <select id="offres" name="offres" multiple required {% if linked_offres %}disabled{% endif %}>
+        {% for offre in offres %}
+        <option value="{{ offre.id }}" {% if offre.id in linked_offres %}selected{% endif %}>{{ offre.nomposte }} - {{ offre.descriptionoffre }}</option>
+        {% endfor %}
+      </select>
+  </div>
+  <div>
+    <button type="submit">Soumettre</button>
+  </div>
+</form>
+{% if error is defined %}
+<code>{{ error }}</code>
+{% endif %}
+{% endblock %}

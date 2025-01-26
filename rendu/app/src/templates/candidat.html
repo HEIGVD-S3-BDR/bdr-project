@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<small>Candidat</small>
+<h1>{{ data.candidat.nom }} {{ data.candidat.prenom }}</h1>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Âge</th>
+        <th>Genre</th>
+        <th>Numéro de téléphone</th>
+        <th>Années d'expérience</th>
+        <th>Rue</th>
+        <th>Ville</th>
+        <th>NPA</th>
+        <th>Pays</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ data.candidat.id }}</td>
+        <td>{{ data.candidat.nom }}</td>
+        <td>{{ data.candidat.prenom }}</td>
+        <td>{{ data.candidat.email }}</td>
+        <td>{{ data.candidat.age }}</td>
+        <td>{{ data.candidat.genre }}</td>
+        <td>{{ data.candidat.numerotel }}</td>
+        <td>{{ data.candidat.anneesexp }}</td>
+        <td>{{ data.candidat.rue }}</td>
+        <td>{{ data.candidat.ville }}</td>
+        <td>{{ data.candidat.npa }}</td>
+        <td>{{ data.candidat.pays }}</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Domaine</th>
+        <th>Diplôme</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for domaine in data.domaines %}
+      <tr>
+        <td>{{ domaine.nom }}</td>
+        <td>{{ domaine.diplomepossede }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</figure>
+
+<a href="/candidat/{{ data.candidat.id }}/edit">
+  Modifier
+</a>
+<a href="/offres?idCandidat={{ data.candidat.id }}">
+  Voir les postulations
+</a>
+<figure>
+  <h3>Offres</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Date de postulation</th>
+        <th>Statut</th>
+        <th>Poste</th>
+        <th>Date de publication</th>
+        <th>Date de clôture</th>
+        <th>Score</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for offre in data.offres %}
+      <tr>
+        <td>{{ offre.id }}</td>
+        <td>{{ offre.datepostulation }}</td>
+        <td>{{ offre.statut }}</td>
+        <td>{{ offre.nomposte }}</td>
+        <td>{{ offre.datepublication }}</td>
+        <td>{{ offre.datecloture|default('-', true) }}</td>
+        <td>{{ offre.score|int }}</td>
+        <td>
+          {% if offre.datecloture == None %}
+            <form action="/offres/{{ offre.id }}/close" method="post">
+              <button type="submit" class="destructive">
+                Clôturer
+              </button>
+            </form>
+          {% endif %}
+          <a href="/offres/{{ offre.id }}">
+            Détails
+          </a>
+          <a href="/offre/{{ offre.id }}/edit">
+            Modifier
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</figure>
+{% endblock %}

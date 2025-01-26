@@ -1,0 +1,34 @@
+services:
+  app:
+    container_name: bdr_project_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app:ro
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+    networks:
+      - bdr_network
+
+  database:
+    image: postgres:16
+    container_name: bdr_project_app_postgres
+    environment:
+      POSTGRES_USER: bdr
+      POSTGRES_PASSWORD: bdr
+      POSTGRES_DB: db
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+      - ./sql/00-schema.sql:/docker-entrypoint-initdb.d/00-schema.sql
+      - ./sql/01-data.sql:/docker-entrypoint-initdb.d/01-data.sql
+    ports:
+      - 5432:5432
+    networks:
+      - bdr_network
+
+networks:
+  bdr_network:
+    driver: bridge

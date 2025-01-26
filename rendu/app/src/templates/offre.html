@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+<small>Offre</small>
+<h1>{{ data.offre.nomposte }}</h1>
+<p>{{ data.offre.descriptionoffre }}</p>
+
+{% if data.offre.datecloture == None %}
+  <p class="badge">Ouverte</p>
+{% else %}
+  <p class="badge destructive">Cloturée</p>
+{% endif %}
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Années d'expérience requises</th>
+        <th>Date de publication</th>
+        <th>Date de clôture</th>
+        <th>Rue</th>
+        <th>Ville</th>
+        <th>NPA</th>
+        <th>Pays</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ data.offre.id }}</td>
+        <td>{{ data.offre.anneesexprequises }}</td>
+        <td>{{ data.offre.datepublication }}</td>
+        <td>{{ data.offre.datecloture|default('-', true) }}</td>
+        <td>{{ data.offre.rue }}</td>
+        <td>{{ data.offre.ville }}</td>
+        <td>{{ data.offre.npa }}</td>
+        <td>{{ data.offre.pays }}</td>
+      </tr>
+    </tbody>
+  </table>
+</figure>
+
+<figure>
+  <table>
+    <thead>
+      <tr>
+        <th>Domaine</th>
+        <th>Diplôme Recherché</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for domaine in data.domaines %}
+      <tr>
+        <td>{{ domaine.nom }}</td>
+        <td>{{ domaine.diplomerecherche }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</figure>
+
+<a href="/offre/{{ data.offre.id }}/edit">
+  Modifier
+</a>
+<a href="/candidats?idoffre={{ data.offre.id }}">
+  Voir les candidats
+</a>
+<a href="?sort_by_score=true" class="btn">
+  Tri par score
+</a>
+<figure>
+  <h3>Candidats</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Statut</th>
+        <th>Date de postulation</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Âge</th>
+        <th>Genre</th>
+        <th>Numéro de téléphone</th>
+        <th>Années d'expérience</th>
+        <th>Score</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for candidat in data.candidats %}
+      <tr>
+        <td>{{ candidat.id }}</td>
+        <td>{{ candidat.statut }}</td>
+        <td>{{ candidat.datepostulation }}</td>
+        <td>{{ candidat.nom }}</td>
+        <td>{{ candidat.prenom }}</td>
+        <td>{{ candidat.email }}</td>
+        <td>{{ candidat.age }}</td>
+        <td>{{ candidat.genre }}</td>
+        <td>{{ candidat.numerotel }}</td>
+        <td>{{ candidat.anneesexp }}</td>
+        <td>{{ candidat.score|int }}</td>
+        <td>
+          <a href="/candidats/{{ candidat.id }}">
+            Détails
+          </a>
+          <a href="/candidat/{{ candidat.id }}/edit">
+            Modifier
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</figure>
+{% endblock %}

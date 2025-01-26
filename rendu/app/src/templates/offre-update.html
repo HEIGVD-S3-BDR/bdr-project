@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<small>Offre</small>
+
+{% if method == 'post' %}
+<h1>Nouveau</h1>
+{% else %}
+<h1>Modifer</h1>
+{% endif %}
+
+<form action="{{ '/offres' if method == 'post' else '/offres/' ~ offre.id ~ '/edit' }}" method="post">
+  <!-- Offer Details -->
+  <div>
+    <label for="nomposte">Nom du poste*</label>
+    <input type="text" id="nomposte" name="nomposte" value="{{ offre.nomposte|default('') }}" required>
+  </div>
+  <div>
+    <label for="descriptionoffre">Description de l'offre*</label>
+    <textarea id="descriptionoffre" name="descriptionoffre" required>{{ offre.descriptionoffre|default('') }}</textarea>
+  </div>
+  <div>
+    <label for="anneesexprequises">Années d'expérience requises*</label>
+    <input type="number" id="anneesexprequises" name="anneesexprequises" value="{{ offre.anneesexprequises|default('') }}" min="0" required>
+  </div>
+  <!-- Address -->
+  <div>
+    <label for="rue">Rue*</label>
+    <input type="text" id="rue" name="rue" value="{{ offre.rue|default('') }}" required>
+  </div>
+  <div>
+    <label for="ville">Ville*</label>
+    <input type="text" id="ville" name="ville" value="{{ offre.ville|default('') }}" required>
+  </div>
+  <div>
+    <label for="npa">NPA*</label>
+    <input type="text" id="npa" name="npa" value="{{ offre.npa|default('') }}" required>
+  </div>
+  <div>
+    <label for="pays">Pays*</label>
+    <input type="text" id="pays" name="pays" value="{{ offre.pays|default('') }}" required>
+  </div>
+  <div>
+    <button type="submit">Soumettre</button>
+  </div>
+</form>
+{% if error is defined %}
+<code>{{ error }}</code>
+{% endif %}
+{% endblock %}
