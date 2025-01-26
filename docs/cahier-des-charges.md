@@ -17,35 +17,29 @@ lang: fr
 
 ## 1. Objectif de l'application
 
-Développer une application pour permettre aux recruteurs de gérer efficacement les processus de recrutement, incluant la gestion des candidats, des postes et des entretiens.
+Développer une application pour permettre aux recruteurs de gérer efficacement les processus de recrutement, incluant la gestion des candidats et des postes.
 
 ## 2. Fonctionnalités principales
 
 ### 2.1 Gestion des candidats
 
-- Ajout, modification et suppression de candidats.
-- Suivi de l'historique des interactions (emails, appels, entretiens) sous format de notes textuelles.
-- Statut du candidat (nouveau, en entretien, embauché, rejeté).
-<!-- TODO: Decide what filter we want to implement -->
-- Recherche par filtres: domaine, diplôme, localisation, expérience
+- Ajout et modification de candidats.
+- Informations personnelles (Nom, âge, genre, localisation, numéro de téléphone, email)
+- Information en lien avec les postulations (Domaine, diplome, années d'expérience)
+- Statut du candidat (en attente, embauché, rejeté).
+- Recherche par filtres: Genre, Age, Années d'expérience
+- Suivi des offres auxquelles il a postulé
 
 ### 2.2 Gestion des offres d'emploi
 
-- Création et gestion d’offres (titre, description, domaine, diplôme requis, localisation).
+- Création et modification d'offres (titre, description, domaine, diplôme requis, expérience requise, localisation).
 - Suivi des candidatures par poste.
-- Associer les candidats à un poste.
-- Tri des candidats par pertinence pour un poste donné.
-
-### 2.3 Gestion des entretiens
-
-- Planification des entretiens (date, heure, type).
-- Suivi des retours sur les entretiens.
+- Statut de l'offre (Ouverte, clôturée)
+- Clôture des offres
+- Tri des candidats par pertinence pour un poste donné selon un score de compatiblité candidat-offre basé sur différents facteurs.
+- Recherche par filtres: Statut de l'offre, date de publication, nom de l'offre.
 
 ### 2.4 Suivi du processus de recrutement
 
-- Vue d'ensemble des candidats par poste ou par recruteur.
-- Workflow des statuts des candidats (du premier contact à l'embauche ou au rejet).
-
-### 2.5 Authentification de base
-
-- Permettre aux recruteurs de se connecter à l'application avec leur adresse mail.
+- Vue d'ensemble des candidats par poste
+- Vue d'ensemble des postes par candidat
